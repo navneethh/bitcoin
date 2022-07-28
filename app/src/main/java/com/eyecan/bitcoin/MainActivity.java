@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -35,10 +36,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
         String producturl ="https://api.wazirx.com/sapi/v1/tickers/24hr";
         recyclerView = findViewById(R.id.recyler);
          ArrayList<Coins> coinlist = new ArrayList<>();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, producturl, null, new Response.Listener<JSONArray>() {
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         try {
                             JSONArray jsonArray= response;
+                            coinlist.clear();
                             for( int i=0 ; i<jsonArray.length();i++){
                                 JSONObject coin = jsonArray.getJSONObject(i);
                                 String name = coin.getString("baseAsset");
@@ -67,11 +72,19 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
-                        Toast.makeText(getBaseContext(),"Error found",Toast.LENGTH_LONG).show();
                         Log.e("Volley111",error.toString());
 
                     }
                 });
+
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestQueue.add(jsonArrayRequest);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         adapter = new BitRecyclerAdapter(coinlist);
         requestQueue.add(jsonArrayRequest);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);

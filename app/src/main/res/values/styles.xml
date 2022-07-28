@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="heading">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/white_black</item>
+    </style>
+
+    <color name="white_black">#555555</color>
+</resources>
