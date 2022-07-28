@@ -14,13 +14,14 @@
         <!-- Customize your theme here. -->
     </style>
     <style name="highlighted">
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:padding">5dp</item>
+        <item name="android:layout_gravity">center</item>
         <item name="android:textColor">@color/highlightedText</item>
     </style>
 
     <style name="details">
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:padding">7dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:textColor">@color/detailedText</item>

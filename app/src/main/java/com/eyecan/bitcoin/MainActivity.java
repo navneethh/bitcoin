@@ -1,6 +1,9 @@
 package com.eyecan.bitcoin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -19,8 +22,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
+    RecyclerView recyclerView;
+
+    BitRecyclerAdapter adapter;
     TextView textView;
     String nameall="";
     @Override
@@ -28,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String producturl ="https://api.wazirx.com/sapi/v1/tickers/24hr";
-        textView = findViewById(R.id.text);
+        recyclerView = findViewById(R.id.recyler);
+         ArrayList<Coins> coinlist = new ArrayList<>();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
@@ -40,10 +49,14 @@ public class MainActivity extends AppCompatActivity {
                             JSONArray jsonArray= response;
                             for( int i=0 ; i<jsonArray.length();i++){
                                 JSONObject coin = jsonArray.getJSONObject(i);
-                                String coinname = coin.getString("symbol");
-                                textView.setText(coinname);
-                                nameall=nameall+coinname;
+                                String name = coin.getString("baseAsset");
+                                String symbol = coin.getString("symbol");
+                                String price = coin.getString("lastPrice");
+
+                               Coins coins = new Coins(name,symbol,price);
+                               coinlist.add(coins);
                             }
+                            adapter.notifyDataSetChanged();
                             
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -59,7 +72,13 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+        adapter = new BitRecyclerAdapter(coinlist);
         requestQueue.add(jsonArrayRequest);
-        textView.setText(nameall);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
+
     }
 }

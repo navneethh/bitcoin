@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/listLinear"
     android:background="@drawable/circular_10dp_white"
-    android:layout_margin="5dp"
+    android:layout_marginTop="8dp"
     android:orientation="horizontal">
 
 
@@ -21,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="Name="
             style="@style/highlighted"
-            android:textSize="30dp" />
+            />
 
         <TextView
             android:id="@+id/name_text"
@@ -49,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textAllCaps="true"
             style="@style/details"
             android:text="btc" />
     </LinearLayout>
@@ -69,8 +71,9 @@
             android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="$"
+            android:layout_height="match_parent"
+            android:text="₹"
+
             style="@style/highlighted"
             />
 
@@ -80,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:text="1.30,000"
                 style="@style/details"
-                />
+                android:paddingLeft="0dp"/>
         </LinearLayout>
 
     </LinearLayout>
